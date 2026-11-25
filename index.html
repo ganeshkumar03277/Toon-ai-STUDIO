@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToonAI Studio</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#10111b;color:white;font-family:Arial,sans-serif}
+header{background:#191b2b;padding:22px;text-align:center}
+header h1{color:#a78bfa;margin:0}
+main{padding:20px;max-width:650px;margin:auto}
+.card{background:#202338;padding:20px;border-radius:16px;margin:18px 0}
+button{background:#8055e8;color:white;border:0;padding:13px 18px;border-radius:10px;font-size:16px;margin:5px;cursor:pointer}
+textarea,input{width:100%;padding:13px;border-radius:9px;border:1px solid #555;background:#151827;color:white;margin:10px 0}
+.preview{background:#080912;border-radius:12px;padding:25px;text-align:center;min-height:150px}
+</style>
+</head>
+<body>
+<header>
+<h1>🎬 ToonAI Studio</h1>
+<p>AI 3D Animation & Video Editor</p>
+</header>
+<main>
+<div class="card">
+<h2>🎨 AI Cartoon Studio</h2>
+<p>अपनी कहानी लिखें और वीडियो बनाने की तैयारी करें।</p>
+<textarea id="story" rows="4" placeholder="अपनी कहानी यहाँ लिखें..."></textarea>
+<button onclick="generate()">Create Animation</button>
+<div class="preview" id="preview">Your Animation Preview</div>
+</div>
+<div class="card">
+<h2>✂️ Video Editor</h2>
+<input type="file" id="video" accept="video/*">
+<video id="player" controls style="width:100%;display:none"></video>
+<button onclick="document.getElementById('video').click()">Import Video</button>
+</div>
+</main>
+<script>
+function generate(){
+let s=document.getElementById('story').value;
+document.getElementById('preview').innerText=s? "🎬 आपकी कहानी तैयार है: "+s:"पहले अपनी कहानी लिखें!";
+}
+document.getElementById('video').onchange=function(e){
+let f=e.target.files[0];
+if(f){
+let p=document.getElementById('player');
+p.src=URL.createObjectURL(f);
+p.style.display='block';
+}
+};
+</script>
+</body>
+</html>
+
+HTML
