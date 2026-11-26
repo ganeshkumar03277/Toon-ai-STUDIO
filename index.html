@@ -257,6 +257,85 @@ requestAnimationFrame(draw);
 requestAnimationFrame(draw);
 }
 </script>
+<!-- ToonAI Studio - AI Cartoon Studio -->
+<section id="toon-ai-studio" style="background:#202338;color:white;padding:20px;border-radius:18px;margin:20px 0;font-family:Arial">
+  <h2 style="color:#c4b5fd">🎬 AI Cartoon Studio</h2>
+  <p>अपनी कहानी लिखें और Cartoon Scenes तैयार करें।</p>
+
+  <label>📝 अपनी कहानी लिखें</label>
+  <textarea id="toonStory" rows="5" placeholder="जैसे: एक छोटा लड़का जंगल में जाता है और वहाँ उसे एक जादुई शेर मिलता है..." style="width:100%;padding:12px;margin:10px 0;border-radius:10px"></textarea>
+
+  <label>👦 Character चुनें</label>
+  <select id="toonCharacter" style="width:100%;padding:12px;margin:10px 0">
+    <option>3D Cartoon Boy</option>
+    <option>3D Cartoon Girl</option>
+    <option>Funny Cartoon Animal</option>
+    <option>Cartoon Superhero</option>
+    <option>3D Cartoon Family</option>
+  </select>
+
+  <label>🌄 Background चुनें</label>
+  <select id="toonBackground" style="width:100%;padding:12px;margin:10px 0">
+    <option>Beautiful Forest</option>
+    <option>Village</option>
+    <option>City</option>
+    <option>Magical Kingdom</option>
+    <option>Space World</option>
+  </select>
+
+  <label>🗣️ भाषा</label>
+  <select id="toonLanguage" style="width:100%;padding:12px;margin:10px 0">
+    <option>Hindi</option>
+    <option>English</option>
+  </select>
+
+  <label>🎨 Animation Style</label>
+  <select id="toonStyle" style="width:100%;padding:12px;margin:10px 0">
+    <option>High Quality 3D Cartoon</option>
+    <option>Pixar-like 3D Animation</option>
+    <option>Anime Animation</option>
+    <option>Kids Cartoon</option>
+  </select>
+
+  <button onclick="toonGenerate()" style="width:100%;padding:15px;background:#8055e8;color:white;border:0;border-radius:12px;font-size:17px;margin-top:15px">
+    ✨ Generate Cartoon Scenes
+  </button>
+
+  <div id="toonResult" style="margin-top:20px"></div>
+</section>
+
+<script>
+function toonGenerate(){
+  const story=document.getElementById('toonStory').value.trim();
+  const character=document.getElementById('toonCharacter').value;
+  const background=document.getElementById('toonBackground').value;
+  const language=document.getElementById('toonLanguage').value;
+  const style=document.getElementById('toonStyle').value;
+  const result=document.getElementById('toonResult');
+
+  if(!story){
+    alert('कृपया पहले अपनी कहानी लिखें!');
+    return;
+  }
+
+  const scenes=story.split(/[।.!?]+/).filter(s=>s.trim());
+
+  result.innerHTML='<h3 style="color:#c4b5fd">🎬 Your Cartoon Storyboard</h3>'+
+  '<p>Character: '+character+'</p>'+
+  '<p>Background: '+background+'</p>'+
+  '<p>Language: '+language+'</p>'+
+  '<p>Style: '+style+'</p>'+
+  scenes.map((scene,i)=>
+    '<div style="background:#303650;padding:15px;margin:12px 0;border-radius:12px">'+
+    '<h3>🎥 Scene '+(i+1)+'</h3>'+
+    '<p>'+scene.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</p>'+
+    '<small>'+character+' | '+background+' | '+style+'</small>'+
+    '</div>'
+  ).join('');
+
+  result.innerHTML+='<p style="color:#c4b5fd">✅ Storyboard तैयार है!</p>';
+}
+</script>
 </body>
 </html>
 
