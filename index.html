@@ -336,6 +336,217 @@ function toonGenerate(){
   result.innerHTML+='<p style="color:#c4b5fd">✅ Storyboard तैयार है!</p>';
 }
 </script>
+  <!-- ToonAI Studio Free 1080p Cartoon Video Generator -->
+<section id="free-video-studio" style="background:#202338;color:white;padding:18px;border-radius:18px;margin:20px 0;font-family:Arial">
+  <h2 style="color:#c4b5fd">🎬 Free 1080p Cartoon Video Maker</h2>
+  <p>अपनी कहानी से Cartoon Animation Video बनाएँ।</p>
+
+  <button onclick="freeToonGenerate()" id="freeToonBtn"
+  style="width:100%;padding:15px;background:#8055e8;color:white;border:0;border-radius:12px;font-size:17px">
+  🚀 Generate 1080p Video
+  </button>
+
+  <p id="freeToonStatus">वीडियो बनाने के लिए बटन दबाएँ।</p>
+
+  <canvas id="freeToonCanvas" width="1920" height="1080"
+  style="width:100%;border-radius:12px;background:#10251d"></canvas>
+
+  <a id="freeToonDownload" style="display:none;color:#c4b5fd;font-size:18px;margin-top:15px">
+  ⬇️ Download Cartoon Video
+  </a>
+</section>
+
+<script>
+async function freeToonGenerate(){
+  const story=document.getElementById('toonStory')?.value.trim();
+
+  if(!story){
+    alert('पहले AI Cartoon Studio में कहानी लिखें!');
+    return;
+  }
+
+  if(!window.MediaRecorder || !HTMLCanvasElement.prototype.captureStream){
+    alert('आपका ब्राउज़र Video Recording सपोर्ट नहीं करता। Chrome अपडेट करें।');
+    return;
+  }
+
+  const canvas=document.getElementById('freeToonCanvas');
+  const ctx=canvas.getContext('2d');
+  const status=document.getElementById('freeToonStatus');
+  const btn=document.getElementById('freeToonBtn');
+  const link=document.getElementById('freeToonDownload');
+
+  const scenes=story.split(/[।.!?]+/).map(s=>s.trim()).filter(Boolean);
+
+  if(!scenes.length) return;
+
+  const mimeTypes=['video/mp4','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'];
+  const mime=mimeTypes.find(t=>MediaRecorder.isTypeSupported(t));
+
+  if(!mime){
+    alert('इस ब्राउज़र में समर्थित Video Format नहीं मिला।');
+    return;
+  }
+
+  btn.disabled=true;
+  link.style.display='none';
+  status.innerText='🎨 Cartoon Animation तैयार हो रही है...';
+
+  const stream=canvas.captureStream(30);
+  const recorder=new MediaRecorder(stream,{mimeType:mime});
+  const chunks=[];
+
+  recorder.ondataavailable=e=>{
+    if(e.data.size) chunks.push(e.data);
+  };
+
+  recorder.onstop=()=>{
+    const blob=new Blob(chunks,{type:mime});
+    const url=URL.createObjectURL(blob);
+    const ext=mime.includes('mp4')?'mp4':'webm';
+
+    link.href=url;
+    link.download='ToonAI-1080p-Cartoon.'+ext;
+    link.style.display='block';
+    status.innerText='✅ आपका 1080p Cartoon Video तैयार है!';
+    btn.disabled=false;
+    stream.getTracks().forEach(t=>t.stop());
+  };
+
+  function drawScene(index,progress){
+    const w=1920,h=1080;
+    const scene=scenes[index];
+
+    const bg=ctx.createLinearGradient(0,0,0,h);
+    bg.addColorStop(0,'#183d57');
+    bg.addColorStop(1,'#397b49');
+    ctx.fillStyle=bg;
+    ctx.fillRect(0,0,w,h);
+
+    // Sun
+    ctx.fillStyle='#ffd66b';
+    ctx.beginPath();
+    ctx.arc(1550,180,100,0,Math.PI*2);
+    ctx.fill();
+
+    // Mountains
+    ctx.fillStyle='#315d45';
+    ctx.beginPath();
+    ctx.moveTo(0,750);
+    ctx.lineTo(500,300);
+    ctx.lineTo(1000,750);
+    ctx.lineTo(1450,350);
+    ctx.lineTo(1920,750);
+    ctx.fill();
+
+    // Ground
+    ctx.fillStyle='#245b36';
+    ctx.fillRect(0,750,w,330);
+
+    // Trees
+    for(let i=0;i<9;i++){
+      let x=i*250+40;
+      ctx.fillStyle='#65442c';
+      ctx.fillRect(x,520,45,280);
+      ctx.fillStyle='#14613d';
+      ctx.beginPath();
+      ctx.arc(x+20,490,110,0,Math.PI*2);
+      ctx.fill();
+    }
+
+    // Cartoon boy
+    let bx=500+Math.sin(progress*Math.PI)*100;
+    ctx.fillStyle='#f2c49a';
+    ctx.beginPath();
+    ctx.arc(bx,590,65,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#30201a';
+    ctx.beginPath();
+    ctx.arc(bx,565,67,Math.PI,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#3589e8';
+    ctx.fillRect(bx-65,655,130,175);
+    ctx.fillStyle='#222';
+    ctx.fillRect(bx-50,820,35,100);
+    ctx.fillRect(bx+15,820,35,100);
+
+    // Friendly cartoon lion
+    let lx=1250-Math.sin(progress*Math.PI)*80;
+    ctx.fillStyle='#d88930';
+    ctx.beginPath();
+    ctx.arc(lx,690,125,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#f4bd53';
+    ctx.beginPath();
+    ctx.arc(lx,690,85,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.beginPath();
+    ctx.arc(lx-30,665,14,0,Math.PI*2);
+    ctx.arc(lx+30,665,14,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#222';
+    ctx.beginPath();
+    ctx.arc(lx-30,665,6,0,Math.PI*2);
+    ctx.arc(lx+30,665,6,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle='#55301d';
+    ctx.beginPath();
+    ctx.arc(lx,710,12,0,Math.PI*2);
+    ctx.fill();
+
+    // Story caption
+    ctx.fillStyle='rgba(0,0,0,0.65)';
+    ctx.fillRect(100,900,1720,120);
+    ctx.fillStyle='white';
+    ctx.textAlign='center';
+    ctx.font='bold 48px sans-serif';
+
+    let words=scene.split(' ');
+    let line='',lines=[];
+    words.forEach(word=>{
+      let test=line?line+' '+word:word;
+      if(ctx.measureText(test).width>1600){
+        lines.push(line);
+        line=word;
+      }else line=test;
+    });
+    if(line) lines.push(line);
+
+    lines.slice(0,2).forEach((l,i)=>{
+      ctx.fillText(l,960,955+i*55);
+    });
+
+    ctx.fillStyle='#fff';
+    ctx.font='30px sans-serif';
+    ctx.fillText('TOONAI STUDIO • 1080p',960,70);
+  }
+
+  const duration=4000;
+  const total=scenes.length*duration;
+  const start=performance.now();
+
+  recorder.start();
+
+  function animate(now){
+    const elapsed=now-start;
+    const index=Math.min(Math.floor(elapsed/duration),scenes.length-1);
+    const progress=(elapsed%duration)/duration;
+
+    drawScene(index,progress);
+    status.innerText='🎬 Scene '+(index+1)+' / '+scenes.length+' तैयार हो रहा है...';
+
+    if(elapsed<total){
+      requestAnimationFrame(animate);
+    }else{
+      drawScene(scenes.length-1,1);
+      setTimeout(()=>recorder.stop(),300);
+    }
+  }
+
+  requestAnimationFrame(animate);
+}
+</script>
 </body>
 </html>
 
