@@ -340,9 +340,16 @@ function toonGenerate(){
 <section id="free-video-studio" style="background:#202338;color:white;padding:18px;border-radius:18px;margin:20px 0;font-family:Arial">
   <h2 style="color:#c4b5fd">🎬 Free 1080p Cartoon Video Maker</h2>
   <p>अपनी कहानी से Cartoon Animation Video बनाएँ।</p>
-
-  <button onclick="freeToonGenerate()" id="freeToonBtn"
-  style="width:100%;padding:15px;background:#8055e8;color:white;border:0;border-radius:12px;font-size:17px">
+<label>🎧 लड़का और लड़की की ऑडियो फाइल अपलोड करें</label>
+<input
+  type="file"
+  id="toonDialogueAudio"
+  accept="audio/*"
+  style="width:100%;padding:12px;margin:12px 0;"
+>
+<p>लड़के और लड़की दोनों की आवाज़ वाली एक ऑडियो फाइल चुनें।</p>
+ <button onclick="freeToonGenerate()" id="freeToonBtn"
+   style="width:100%;padding:15px;background:#8055e8;color:white;border:0;border-radius:12px;font-size:17px">
   🚀 Generate 1080p Video
   </button>
 
